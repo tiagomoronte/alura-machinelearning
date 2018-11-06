@@ -1,5 +1,4 @@
 import pandas as pd
-from sklearn.naive_bayes import MultinomialNB
 from collections import Counter
 
 df = pd.read_csv('busca.csv')
@@ -18,20 +17,30 @@ treino_marcacoes = Y[:tamanho_de_treino]
 teste_dados = X[-tamanho_teste:]
 teste_marcacoes = Y[-tamanho_teste:]
 
+def fit_and_predict(modelo, treino_dados, treino_marcacoes, teste_dados, teste_marcacoes):
 
+    modelo.fit(treino_dados, treino_marcacoes)
+    resultado = modelo.predict(teste_dados)
+
+    acertos = resultado == teste_marcacoes
+    total_de_acertos = sum(acertos)
+    total_de_elementos = len(teste_dados)
+    taxa_acertos = total_de_acertos / total_de_elementos
+
+    taxa_acerto_base = max(Counter(teste_marcacoes).values()) / len(Y)
+
+    print(taxa_acerto_base)
+    print(taxa_acertos)
+
+
+
+from sklearn.naive_bayes import MultinomialNB
 modelo = MultinomialNB()
-modelo.fit(treino_dados, treino_marcacoes)
 
-resultado = modelo.predict(teste_dados)
+fit_and_predict(modelo, treino_dados, treino_marcacoes, teste_dados, teste_marcacoes)
 
-acertos = resultado == teste_marcacoes
-total_de_acertos = sum(acertos)
-total_de_elementos = len(teste_dados)
+from sklearn.ensemble import AdaBoostClassifier
+modelo = AdaBoostClassifier()
 
-taxa_acertos = total_de_acertos / total_de_elementos
-
-taxa_acerto_base = max(Counter(teste_marcacoes).values()) / len(Y)
-
-print(taxa_acerto_base)
-print(taxa_acertos)
+fit_and_predict(modelo, treino_dados, treino_marcacoes, teste_dados, teste_marcacoes)
 
