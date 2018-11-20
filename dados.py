@@ -20,7 +20,7 @@ def carregar_busca():
     X = []
     Y = []
 
-    arquivo = open('busca.csv', 'rt')
+    arquivo = open('buscas.csv', 'rt')
     leitor = csv.reader(arquivo)
 
     next(leitor)
